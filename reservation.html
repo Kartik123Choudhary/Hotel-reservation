@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation System</title>
+    <link rel="stylesheet" href="reservation.css"> 
+</head>
+<body>
+    <h1>Hotel Reservation System</h1>
+
+    <!-- Reservation Form -->
+    <form id="reservationForm">
+        <label for="guestName">Guest Name:</label>
+        <input type="text" id="guestName" name="guestName" required><br>
+
+        <label for="guestEmail">Email:</label>
+        <input type="email" id="guestEmail" name="guestEmail" required><br>
+
+        <label for="guestPhone">Phone Number:</label>
+        <input type="tel" id="guestPhone" name="guestPhone" required><br>
+
+        <label for="roomType">Room Type:</label>
+        <select id="roomType" name="roomType" required>
+            <option value="single">Single Room</option>
+            <option value="double">Double Room</option>
+            <option value="suite">Suite</option>
+        </select><br>
+
+        <label for="duration">Duration of Stay (in nights):</label>
+        <input type="number" id="duration" name="duration" min="1" required><br>
+
+        <button type="submit">Book Now</button>
+    </form>
+
+    <!-- Room Table -->
+    <table id="roomTable">
+        <thead>
+            <tr>
+                <th>Room Type</th>
+                <th>Price per Night</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-room-type="single">
+                <td>Single Room</td>
+                <td>$100</td>
+                <td>Available</td>
+            </tr>
+            <tr data-room-type="double">
+                <td>Double Room</td>
+                <td>$150</td>
+                <td>Available</td>
+            </tr>
+            <tr data-room-type="suite">
+                <td>Suite</td>
+                <td>$200</td>
+                <td>Available</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('reservationForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const roomType = document.getElementById('roomType').value;
+            const duration = parseInt(document.getElementById('duration').value);
+            const pricePerNight = getPricePerNight(roomType);
+
+            const totalCost = pricePerNight * duration;
+            alert(`Total Cost: $${totalCost}`);
+
+            // Update room availability status
+            updateRoomAvailability(roomType);
+        });
+
+        function getPricePerNight(roomType) {
+            switch (roomType) {
+                case 'single':
+                    return 100;
+                case 'double':
+                    return 150;
+                case 'suite':
+                    return 200;
+                default:
+                    return 0;
+            }
+        }
+
+        function updateRoomAvailability(roomType) {
+            const roomRow = document.querySelector(`[data-room-type="${roomType}"]`);
+            roomRow.querySelector('td:last-child').textContent = 'Booked';
+        }
+    </script>
+</body>
+</html>
+
